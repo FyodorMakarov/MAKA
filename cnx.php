@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Consultar Restaurante</title>
+    <link rel="stylesheet" type="text/css" href="css.css">
+    <!-- especificamos el archivo CSS a ocupar -->
+</head>
+<body>
+    <center>
+        <?php
+        $con = mysqli_connect("localhost", "root", "", "alumnos"); // se crea la conexión al servidor
+        $resultado = mysqli_query($con, "SELECT * FROM menu"); // consultamos el contenido de la tabla datos
+        
+        if ($resultado === FALSE) {
+            echo "fallo ";
+            die(mysqli_error($con)); // Muestra el error que ocurrió
+        }
+        
+        echo "<center><font face='Arial'>";
+        echo "<a href='consulta_alumnos.php'>Actualizar tabla</a>";
+        echo "<h1>Consulta de la tabla Datos</h1>";
+        echo "<table border='1'>
+            <tr>
+                <th>Matricula</th>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Edad</th>
+            </tr>";
+        
+        while ($row = mysqli_fetch_array($resultado)) { // Muestra el contenido de cada alumno
+            echo "<tr>";
+            echo "<td align='center'>" . $row['id_platillo'] . "</td>";
+            echo "<td>" . $row['nombre'] . "</td>";
+            echo "<td>" . $row['descripcion'] . "</td>";
+            echo "<td align='center'>" . $row['costo'] . "</td>";
+            echo "</tr>";
+        }
+        
+        echo "</table>";
+        $registros = mysqli_num_rows($resultado);
+        echo "<br>Registros: " . $registros;
+        
+        mysqli_close($con); // cerramos la conexión a la BD
+
+        session_start();
+        if (!isset($_SESSION['usuario'])) {
+        header("Location: login.php");
+        exit();
+}
+
+        ?>
+    </center>
+</body>
+</html>
